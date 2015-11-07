@@ -29,6 +29,7 @@ public class GreedyAlgorithm extends Algorithm {
 			readers[i] = new Reader(circle.getRandomPoint());
 			
 		}
+		
 		ps.println("====================node========================");
 		for(int i=0; i<nodes.length; i++)
 		{
