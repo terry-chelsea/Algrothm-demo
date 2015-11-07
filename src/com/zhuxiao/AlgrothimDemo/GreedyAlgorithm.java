@@ -16,6 +16,7 @@ import java.util.TreeMap;
 public class GreedyAlgorithm extends Algorithm {
 	private static double gridSize = 0.01;
 	private static PrintStream ps=Scenario.ps;
+	private static int test = 100;
 	
 	@Override
 	public Reader[] runInternal(Node[] nodes, int num, Circle circle) {
