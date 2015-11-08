@@ -16,9 +16,9 @@ public class Scenario {
 	// 最初放置node节点的场景大小
 	private static final double INIT_MAX_SIZE = 16.0;   
 	 //node节点的初始化个数
-	private static final int NODE_NUM = 20;
+	private static final int NODE_NUM = 100;
 	//node节点的最小接受功率
-	private static final double MIN_POWERS[] = {0.0001, 0.0002};
+	private static final double MIN_POWERS[] = {0.0001, 0.0002, 0.0003, 0.0004};
 	//异构的节点种类个数
 	private static final int MIN_POWERS_SIZE = MIN_POWERS.length;
 	//随机数生成器
@@ -26,7 +26,7 @@ public class Scenario {
 	public static PrintStream ps=null;
 	static {
 		try {
-			ps = new PrintStream(new File("E:\\eclipse\\ZHUXIAOproject\\data.txt"));
+			ps = new PrintStream(new File("C:\\Users\\xiao\\Desktop\\algorithm\\Algrothm-demo\\data.txt"));
 		} catch (FileNotFoundException e) {
 			ps = System.out;
 		}
@@ -143,19 +143,10 @@ public class Scenario {
 		if(this.circle == null)
 			return ;
 		//已经注册的算法，根据当前的场景计算reader的个数和reader的位置信息
-//		double [] d=new double[20];
-//		for(int i=0; i<nodes.length ;i++)
-//		{
-//			d[i]=this.circle.getCenter().distanceTo(nodes[i].getPosition());
-//		}
-		for(int i=0; i<nodes.length; i++)
-		{
-			System.out.println("node"+i+":"+nodes[i].getPosition());
-		}
 		for(Algorithm algorithm : this.algorithms) {
 			//根据当前算法计算出该场景下满足条件的最小个数的reader分布
 			Reader readers[] = algorithm.run(nodes, this.circle);
-			ps.println("\tUsing " + algorithm + ", need " + readers.length);
+			System.out.println("\tUsing " + algorithm + ", need " + readers.length);
 			//获取该算法的结果集（Map的value是一个存放reader个数的list）
 			List<Integer> results = resultMap.get(algorithm);
 			//获取到list之后，把本次结果加入到里面（即满足结果的最小的reader个数）
@@ -176,7 +167,7 @@ public class Scenario {
 			for(Integer value : results) {
 				sum += value;
 			}
-			ps.println(alg + ", test times " + size + ",average reader number : " + (sum / size));
+			System.out.println(alg + ", test times " + size + ",average reader number : " + (sum / size));
 		}
 	}
 	
@@ -204,12 +195,12 @@ public class Scenario {
 	}
 	
 	private static void testAlgorithm() {
-		int count = 13  ;
+		int count = 20;
 		Scenario scenario = new Scenario();
 		scenario.addAlgorithm(new GreedyAlgorithm());
-//		scenario.addAlgorithm(new ParticleSwarmOptimizationAlgorithm());
+		scenario.addAlgorithm(new ParticleSwarmOptimizationAlgorithm());
 		for(int i = 0; i < count ; ++ i) {
-			ps.println("Scenario " + (i + 1) + "　: ");
+			System.out.println("Scenario " + (i + 1) + "　: ");
 			scenario.calculateMinReader();
 		}
 		
@@ -219,7 +210,6 @@ public class Scenario {
 	public static void main(String[] args) {
 //		testCircle();
 		//随机函数种子设置
-		rand.setSeed(555L);
 		testAlgorithm();
 		
   	}
