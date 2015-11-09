@@ -1,6 +1,5 @@
 package com.zhuxiao.AlgrothimDemo;
 
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -22,13 +21,14 @@ public class AddOneByOneGreedyAlgorithm extends Algorithm {
 		double sumWeight = 0.0;
 		if(lastReaders == null || lastReaders.length == 0) {
 			for(Node node : nodes) {
-				x += node.getPosition().getX() * node.getMinPower();
-				y += node.getPosition().getY() * node.getMinPower();
-				sumWeight += node.getMinPower();
+				double weight = node.getMinPower();
+				x += node.getPosition().getX() * weight;
+				y += node.getPosition().getY() * weight;
+				sumWeight += weight;
 			}
 			x = x / sumWeight;
 			y = y / sumWeight;
-			return new Reader[]{new Reader(new Point(x, y))};
+			return new Reader[]{new Reader(circle.getCenter())};
 		}
 		
 		Reader[] readers = new Reader[lastReaders.length + 1];
@@ -53,15 +53,18 @@ public class AddOneByOneGreedyAlgorithm extends Algorithm {
 		
 		for(Node node : nodeWeight) {
 			double ratio = node.getRatio();
-			double weight = Math.sqrt((1 - ratio) / sumRatio);
+			double weight = (1 - ratio) / sumRatio;
 			sumWeight += weight;
 			x += node.getPosition().getX() * weight;
 			y += node.getPosition().getY() * weight;
+			log("Last round node less than 1 : " + node);
 		}
 		
 		x = x / sumWeight;
 		y = y / sumWeight;
-		readers[lastReaders.length] = new Reader(new Point(x, y));
+		Reader newReader = new Reader(new Point(x, y));;
+		log("New Reader location " + newReader);
+		readers[lastReaders.length] = newReader;
 		return readers;
 	}
 	

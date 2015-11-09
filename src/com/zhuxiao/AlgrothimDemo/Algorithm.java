@@ -88,6 +88,12 @@ public abstract class Algorithm {
 			ps.println(line);
 		}
 	}
+	
+	protected void log(String line, boolean condition) {
+		if(condition)
+			ps.println(line);
+	}
+	
 /*	
 	public String toString() {
 		return "RandomAlgorithm";
