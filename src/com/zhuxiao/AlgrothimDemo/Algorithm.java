@@ -6,11 +6,17 @@ import java.io.PrintStream;
 public abstract class Algorithm {
 	private static PrintStream ps = Scenario.ps;
 	private static int INIT_NUM = 1;
+	protected boolean isLog = false;
 
+	protected void init() {
+		
+	}
+	
 	protected abstract Reader[] runInternal(Node[] nodes, int readerNum, Circle circle);
 	
 	//根据输入，在该场景下，满足每个node节点的接受功率大于等于阈值时所需要的最小的reader节点个数
 	public Reader[] run(Node[] nodes, Circle circle) {
+		init();
 		for(int i = INIT_NUM ;  ; ++ i) {
 			//runTnternal方法：当找到不满足条件时返回null，循环继续增加reader个数，直到满足条件时，返回reader分布信息
 			Reader[] readers = runInternal(nodes, i , circle);
@@ -36,12 +42,12 @@ public abstract class Algorithm {
 		}
 		int i = 1;
 		for(Node node : nodes) {
-			ps.println("node " + (i ++) + node.getPosition());
+			log("node " + (i ++) + node.getPosition());
 		}
 		
 		i = 0;
 		for(Reader reader : readers) {
-			ps.println("reader " + (i ++) + reader.getPosition());
+			log("reader " + (i ++) + reader.getPosition());
 		}
 		ps.flush();
 		return true;
@@ -56,10 +62,10 @@ public abstract class Algorithm {
 			}
 		}
 		//找出接收功率最小的节点(可能有多个)及该最小功率tempPmin	
-		ps.println("==========node的ratio=============");
+		log("==========node的ratio=============");
 		for(int i=0; i<nodes.length; i++)
 		{
-			ps.println("初始化node"+i+"的ratio: "+nodes[i].getRatio());
+			log("初始化node"+i+"的ratio: "+nodes[i].getRatio());
 		}
 		double tempPmin = nodes[0].getRatio();
 		int nodenum=0;
@@ -73,6 +79,14 @@ public abstract class Algorithm {
 		}
 //		System.out.println("最糟糕节点："+nodenum + " ,ratio " + tempPmin);
 		return nodenum;
+	}
+	
+	
+	protected void log(String line) {
+		//控制是否打开日志
+		if(this.isLog) {
+			ps.println(line);
+		}
 	}
 /*	
 	public String toString() {

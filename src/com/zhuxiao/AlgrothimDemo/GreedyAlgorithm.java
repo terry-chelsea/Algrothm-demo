@@ -1,61 +1,57 @@
 package com.zhuxiao.AlgrothimDemo;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
-import java.util.TreeMap;
 
 public class GreedyAlgorithm extends Algorithm {
 	private static double gridSize = 0.01;
-	private static PrintStream ps=Scenario.ps;
+	
+	public GreedyAlgorithm() {
+		super.isLog = false;
+	}
 	
 	@Override
 	public Reader[] runInternal(Node[] nodes, int num, Circle circle) {
 		Reader readers[] = new Reader[num];
-		int cnt = 0;
 		int N = nodes.length;
 		int K = readers.length;
 		int round = 0;
-		ps.println("reader个数： "+num);
+		log("reader个数： "+num);
 		for(int i = 0 ; i < K; ++ i) {
 			readers[i] = new Reader(circle.getRandomPoint());
 			
 		}
 		
-		ps.println("====================node========================");
+		log("====================node========================");
 		for(int i=0; i<nodes.length; i++)
 		{
 			nodes[i].setPower(0.0);;
-			ps.println("\tnode "+(i+1) +" : "+nodes[i]);
+			log("\tnode "+(i+1) +" : "+nodes[i]);
 		}
-		ps.println("===================reader=======================");
+		log("===================reader=======================");
 		for(int i=0;i<readers.length;i++)
 		{
-			ps.println("\treader "+(i+1)+" : "+readers[i]);
+			log("\treader "+(i+1)+" : "+readers[i]);
 		}
-		ps.println("===============reader-over===================");
+		log("===============reader-over===================");
 
 		int minNodeId = getMinPower(nodes, readers);
 		double curMin = nodes[minNodeId].getRatio();
 		
-		ps.println("===============minNodeId================");
-		ps.println("\tminNodeId = "+(minNodeId+1));
-		ps.println("\tcurMin = "+curMin);
-		ps.println("===============minNodeId-over===========");
+		log("===============minNodeId================");
+		log("\tminNodeId = "+(minNodeId+1));
+		log("\tcurMin = "+curMin);
+		log("===============minNodeId-over===========");
 		double Pmin = Double.MIN_VALUE;
 		//----------------进行反复的readers 拓扑改进，直到无法进一步改进为止--------------------------------
-		ps.println("=======进入循环===========");
+		log("=======进入循环===========");
 		while (curMin > Pmin) {
 			round ++;
-			ps.println("++++++++++++++++round: "+round);
+			log("++++++++++++++++round: "+round);
 //			for(Reader r : readers) {
 //				if(circle.isOutside(r.getPosition()))
 //					System.out.println("!!!!reader " + r + " is outside ~");
@@ -77,7 +73,7 @@ public class GreedyAlgorithm extends Algorithm {
 				}
 			}
 			
-			ps.print("node ratio less than 1 are : " + list);
+			log("node ratio less than 1 are : " + list);
 			
 			Map<Integer, Integer> moveReaders = new HashMap<Integer, Integer>();
 			for(int i = 0 ; i < list.size() ; ++ i) {
@@ -100,7 +96,7 @@ public class GreedyAlgorithm extends Algorithm {
 			for(Integer readerNum : readerNumSet)
 			{
 				int nodeNum = moveReaders.get(readerNum);
-				ps.println("糟糕node : "+(nodeNum+1)+"  对应的reader : "+(readerNum+1));
+				log("糟糕node : "+(nodeNum+1)+"  对应的reader : "+(readerNum+1));
 			}
 		    //对于每一个功率最小的传感器节点同时进行位置调整
 			for(Integer readerNum : moveReaders.keySet()) {
@@ -111,18 +107,18 @@ public class GreedyAlgorithm extends Algorithm {
 				ratio = gridSize / temp;
 				double curX = readers[readerNum].getPosition().getX();
 				double curY = readers[readerNum].getPosition().getY();
-				ps.println("\tnode"+(nodeNum+1)+"对应的reader"+(readerNum+1)+"\t调整前reader位置：  "+ readers[readerNum]);
-				ps.println("\t调整前d(node-reader)距离:  "+nodes[nodeNum].getPosition().distanceTo(readers[readerNum].getPosition()));
+				log("\tnode"+(nodeNum+1)+"对应的reader"+(readerNum+1)+"\t调整前reader位置：  "+ readers[readerNum]);
+				log("\t调整前d(node-reader)距离:  "+nodes[nodeNum].getPosition().distanceTo(readers[readerNum].getPosition()));
 				readers[readerNum].getPosition().setX(curX + ratio*(nodes[nodeNum].getPosition().getX() - curX));
 				readers[readerNum].getPosition().setY(curY + ratio*(nodes[nodeNum].getPosition().getY() - curY));
-				ps.println("\tnode"+(nodeNum+1)+"对应的reader"+(readerNum+1)+"\t调整后reader位置：  "+readers[readerNum]);
-				ps.println("\t调整后的d(node-reader)距离:  "+nodes[nodeNum].getPosition().distanceTo(readers[readerNum].getPosition()));  
+				log("\tnode"+(nodeNum+1)+"对应的reader"+(readerNum+1)+"\t调整后reader位置：  "+readers[readerNum]);
+				log("\t调整后的d(node-reader)距离:  "+nodes[nodeNum].getPosition().distanceTo(readers[readerNum].getPosition()));  
 			}
 			
 			int nodeNum = getMinPower(nodes, readers);
 			curMin=nodes[nodeNum].getRatio();
-			ps.println("\t最糟糕的node： "+(nodeNum+1));
-			ps.println("\t最糟糕node的ratio:  "+ curMin);
+			log("\t最糟糕的node： "+(nodeNum+1));
+			log("\t最糟糕node的ratio:  "+ curMin);
 			
 			if(curMin > 1.0) {
 /*				System.out.println("Circle : " + circle);
@@ -135,13 +131,14 @@ public class GreedyAlgorithm extends Algorithm {
 */				return readers;
 			}
 			if(round % 100 == 0) {
-				ps.println("\t\t round " + round );
+				log("\t\t round " + round );
 			}
 		}  //-- end while
 //			System.out.println("move reader num = " + moveNum + ", min ratio = " + curMin);
 
 		return null;
 	}
+
 	
 	public String toString() {
 		return "Greedy Algorithm";

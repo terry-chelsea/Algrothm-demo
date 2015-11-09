@@ -16,7 +16,7 @@ public class Scenario {
 	// 最初放置node节点的场景大小
 	private static final double INIT_MAX_SIZE = 16.0;   
 	 //node节点的初始化个数
-	private static final int NODE_NUM = 100;
+	private static final int NODE_NUM = 20;
 	//node节点的最小接受功率
 	private static final double MIN_POWERS[] = {0.0001, 0.0002, 0.0003, 0.0004};
 	//异构的节点种类个数
@@ -26,7 +26,7 @@ public class Scenario {
 	public static PrintStream ps=null;
 	static {
 		try {
-			ps = new PrintStream(new File("C:\\Users\\xiao\\Desktop\\algorithm\\Algrothm-demo\\data.txt"));
+			ps = new PrintStream(new File("E:\\Algriothm-xiao\\Algrothm-demolog.txt"));
 		} catch (FileNotFoundException e) {
 			ps = System.out;
 		}
@@ -198,7 +198,8 @@ public class Scenario {
 		int count = 20;
 		Scenario scenario = new Scenario();
 		scenario.addAlgorithm(new GreedyAlgorithm());
-		scenario.addAlgorithm(new ParticleSwarmOptimizationAlgorithm());
+//		scenario.addAlgorithm(new ParticleSwarmOptimizationAlgorithm());
+		scenario.addAlgorithm(new AddOneByOneGreedyAlgorithm());
 		for(int i = 0; i < count ; ++ i) {
 			System.out.println("Scenario " + (i + 1) + "　: ");
 			scenario.calculateMinReader();
