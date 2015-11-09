@@ -3,6 +3,7 @@ package com.zhuxiao.AlgrothimDemo;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -36,13 +37,13 @@ public class AddOneByOneGreedyAlgorithm extends Algorithm {
 		}
 		
 		getMinPower(nodes, lastReaders);
-		Map<Node, Double> nodeWeight = new HashMap<Node, Double>();
+		List<Node> nodeWeight = new LinkedList<Node>();
 		double sumRatio = 0.0;
 		for(Node node : nodes) {
 			double ratio = node.getRatio();
 			if(ratio < 1.0) {
-				nodeWeight.put(node, ratio);
-				sumRatio += ratio;
+				nodeWeight.add(node);
+				sumRatio += (1.0 - ratio);
 			}
 		}
 		if(nodeWeight.isEmpty()) {
@@ -50,9 +51,9 @@ public class AddOneByOneGreedyAlgorithm extends Algorithm {
 			return readers;
 		}
 		
-		for(Node node : nodeWeight.keySet()) {
-			double ratio = nodeWeight.get(node);
-			double weight = Math.sqrt(ratio / sumRatio);
+		for(Node node : nodeWeight) {
+			double ratio = node.getRatio();
+			double weight = Math.sqrt((1 - ratio) / sumRatio);
 			sumWeight += weight;
 			x += node.getPosition().getX() * weight;
 			y += node.getPosition().getY() * weight;
@@ -175,6 +176,11 @@ public class AddOneByOneGreedyAlgorithm extends Algorithm {
 //			System.out.println("move reader num = " + moveNum + ", min ratio = " + curMin);
 
 		lastReaders = readers;
+		
+		for(int i = 0 ; i < readers.length ; ++ i) {
+			log("after while reader " + (i + 1) + " : " + readers[i]);
+		}
+		log("-------------------------------");
 		return null;
 	}
 	
