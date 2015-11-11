@@ -113,6 +113,9 @@ public class GreedyAlgorithm extends Algorithm {
 				System.out.println("Successfully find readers after " + round + " rounds...");
 				return readers;
 			}
+			if(round >= 1000)
+				break;
+/*			
 			minNodeIndex.set((round - 1) % CHECK_DEADLOCK_SIZE, nodeNum);
 			
 			if(lastNode != curNode) {
@@ -132,6 +135,7 @@ public class GreedyAlgorithm extends Algorithm {
 				if(deadlock)
 					break;
 			}
+*/			
 		}
 		System.out.println("Reader number " + num + " run " + round + " rounds ...");
 		return null;

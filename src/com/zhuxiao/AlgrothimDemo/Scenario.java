@@ -192,7 +192,7 @@ public class Scenario {
 	}
 	
 	private static void testAlgorithm() {
-		int count = 200;
+		int count = 100;
 		Scenario scenario = new Scenario();
 		scenario.addAlgorithm(new GreedyAlgorithm());
 		scenario.addAlgorithm(new ParticleSwarmOptimizationAlgorithm());
