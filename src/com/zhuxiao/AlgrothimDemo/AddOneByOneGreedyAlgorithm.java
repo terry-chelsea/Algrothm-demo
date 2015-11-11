@@ -12,7 +12,7 @@ public class AddOneByOneGreedyAlgorithm extends Algorithm {
 	private Reader[] lastReaders = null;
 	
 	public AddOneByOneGreedyAlgorithm() {
-		super.isLog = true;
+		super.isLog = false;
 	}
 
 	private Reader[] deployReaders(Node[] nodes, Circle circle) {
@@ -36,7 +36,9 @@ public class AddOneByOneGreedyAlgorithm extends Algorithm {
 			readers[i] = lastReaders[i];
 		}
 		
-		getMinPower(nodes, lastReaders);
+		int nodeId = getMinPower(nodes, lastReaders);
+		readers[lastReaders.length] = new Reader(nodes[nodeId].getPosition());
+		/*
 		List<Node> nodeWeight = new LinkedList<Node>();
 		double sumRatio = 0.0;
 		for(Node node : nodes) {
@@ -65,6 +67,7 @@ public class AddOneByOneGreedyAlgorithm extends Algorithm {
 		Reader newReader = new Reader(new Point(x, y));;
 		log("New Reader location " + newReader);
 		readers[lastReaders.length] = newReader;
+		*/
 		return readers;
 	}
 	
@@ -75,29 +78,11 @@ public class AddOneByOneGreedyAlgorithm extends Algorithm {
 		int K = readers.length;
 		int round = 0;
 		
-		log("====================node========================");
-		for(int i=0; i<nodes.length; i++)
-		{
-			nodes[i].setPower(0.0);;
-			log("\tnode "+(i+1) +" : "+nodes[i]);
-		}
-		log("===================reader=======================");
-		for(int i=0;i<readers.length;i++)
-		{
-			log("\treader "+(i+1)+" : "+readers[i]);
-		}
-		log("===============reader-over===================");
-
 		int minNodeId = getMinPower(nodes, readers);
 		double curMin = nodes[minNodeId].getRatio();
 		
-		log("===============minNodeId================");
-		log("\tminNodeId = "+(minNodeId+1));
-		log("\tcurMin = "+curMin);
-		log("===============minNodeId-over===========");
 		double Pmin = Double.MIN_VALUE;
 		//----------------进行反复的readers 拓扑改进，直到无法进一步改进为止--------------------------------
-		log("=======进入循环===========");
 		while (curMin > Pmin) {
 			round ++;
 			log("++++++++++++++++round: "+round);
@@ -170,13 +155,15 @@ public class AddOneByOneGreedyAlgorithm extends Algorithm {
 			log("\t最糟糕node的ratio:  "+ curMin);
 			
 			if(curMin > 1.0) {
+//				System.out.println("Successfully find readers after " + round + " rounds...");
 				return readers;
 			}
 			if(round % 100 == 0) {
 				log("\t\t round " + round );
 			}
-		}  //-- end while
+		} 
 //			System.out.println("move reader num = " + moveNum + ", min ratio = " + curMin);
+//		System.out.println("Reader number " + readers.length + " current min ratio " + curMin + " run " + round + " rounds ...");
 
 		lastReaders = readers;
 		

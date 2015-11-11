@@ -110,7 +110,7 @@ public class GreedyAlgorithm extends Algorithm {
 			log("After current min node ratio sum is " + curMinSum + ", current min node " + nodeNum + ", ratio " + nodes[nodeNum].getRatio());
 			
 			if(curMin > 1.0) {
-				System.out.println("Successfully find readers after " + round + " rounds...");
+//				System.out.println("Successfully find readers after " + round + " rounds...");
 				return readers;
 			}
 			if(round >= 1000)
@@ -137,7 +137,7 @@ public class GreedyAlgorithm extends Algorithm {
 			}
 */			
 		}
-		System.out.println("Reader number " + num + " run " + round + " rounds ...");
+//		System.out.println("Reader number " + num + " run " + round + " rounds ...");
 		return null;
 	}
 
