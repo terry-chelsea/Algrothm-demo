@@ -13,9 +13,9 @@ public class Scenario {
 	// 最初放置node节点的场景大小
 	private static final double INIT_MAX_SIZE = 16.0;   
 	 //node节点的初始化个数
-	private static final int NODE_NUM = 50;
+	private static final int NODE_NUM = 30;
 	//node节点的最小接受功率
-	private static final double MIN_POWERS[] = {0.0001, 0.0002, 0.0003, 0.0004};
+	private static final double MIN_POWERS[] = {0.0001, 0.0002};
 	//异构的节点种类个数
 	private static final int MIN_POWERS_SIZE = MIN_POWERS.length;
 	//随机数生成器
@@ -23,7 +23,7 @@ public class Scenario {
 	public static PrintStream ps=null;
 	static {
 		try {
-			ps = new PrintStream(new File("E:\\Algriothm-xiao\\log.txt"));
+			ps = new PrintStream(new File("E:\\eclipse\\test.txt"));
 		} catch (FileNotFoundException e) {
 			ps = System.out;
 		}
@@ -191,10 +191,10 @@ public class Scenario {
 		}
 	}
 	
-	private static void testAlgorithm() {
-		int count = 100;
+	private static void testAlgorithm() {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+		int count = 3000;
 		Scenario scenario = new Scenario();
-		scenario.addAlgorithm(new GreedyAlgorithm());
+		//scenario.addAlgorithm(new GreedyAlgorithm());
 		scenario.addAlgorithm(new ParticleSwarmOptimizationAlgorithm());
 		scenario.addAlgorithm(new AddOneByOneGreedyAlgorithm());
 		for(int i = 0; i < count ; ++ i) {
@@ -208,6 +208,7 @@ public class Scenario {
 	public static void main(String[] args) {
 //		testCircle();
 		//随机函数种子设置
+		//rand.setSeed(555L);
 		testAlgorithm();
 		
   	}

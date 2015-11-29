@@ -20,6 +20,7 @@ public class AddOneByOneGreedyAlgorithm extends Algorithm {
 		double y = 0.0;
 		double sumWeight = 0.0;
 		if(lastReaders == null || lastReaders.length == 0) {
+			log("reader个数： 1");
 			for(Node node : nodes) {
 				double weight = node.getMinPower();
 				x += node.getPosition().getX() * weight;
@@ -32,11 +33,13 @@ public class AddOneByOneGreedyAlgorithm extends Algorithm {
 		}
 		
 		Reader[] readers = new Reader[lastReaders.length + 1];
+		log("reader个数：  "+readers.length );
 		for(int i = 0 ; i < lastReaders.length; ++ i) {
 			readers[i] = lastReaders[i];
 		}
 		
 		int nodeId = getMinPower(nodes, lastReaders);
+		log("\t最糟糕的节点位置：  "+nodes[nodeId].getPosition());
 		readers[lastReaders.length] = new Reader(nodes[nodeId].getPosition());
 		/*
 		List<Node> nodeWeight = new LinkedList<Node>();
@@ -74,6 +77,15 @@ public class AddOneByOneGreedyAlgorithm extends Algorithm {
 	@Override
 	public Reader[] runInternal(Node[] nodes, int num, Circle circle) {
 		Reader readers[] = deployReaders(nodes, circle);
+		
+		for(int i=0; i<readers.length; i++)
+		{
+			log("\treader "+(i+1)+":"+readers[i]);
+		}
+		for(int i=0; i<nodes.length; i++)
+		{
+			log("\tnode "+(i+1)+nodes[i].getPosition());
+		}
 		int N = nodes.length;
 		int K = readers.length;
 		int round = 0;
@@ -85,7 +97,7 @@ public class AddOneByOneGreedyAlgorithm extends Algorithm {
 		//----------------进行反复的readers 拓扑改进，直到无法进一步改进为止--------------------------------
 		while (curMin > Pmin) {
 			round ++;
-			log("++++++++++++++++round: "+round);
+			log("round: "+round);
 //			for(Reader r : readers) {
 //				if(circle.isOutside(r.getPosition()))
 //					System.out.println("!!!!reader " + r + " is outside ~");
@@ -107,7 +119,7 @@ public class AddOneByOneGreedyAlgorithm extends Algorithm {
 				}
 			}
 			
-			log("node ratio less than 1 are : " + list);
+			log("\tnode ratio less than 1 are : " + list);
 			
 			Map<Integer, Integer> moveReaders = new HashMap<Integer, Integer>();
 			for(int i = 0 ; i < list.size() ; ++ i) {
@@ -130,7 +142,7 @@ public class AddOneByOneGreedyAlgorithm extends Algorithm {
 			for(Integer readerNum : readerNumSet)
 			{
 				int nodeNum = moveReaders.get(readerNum);
-				log("糟糕node : "+(nodeNum+1)+"  对应的reader : "+(readerNum+1));
+				log("\t糟糕node : "+(nodeNum+1)+"  对应的reader : "+(readerNum+1));
 			}
 		    //对于每一个功率最小的传感器节点同时进行位置调整
 			for(Integer readerNum : moveReaders.keySet()) {
