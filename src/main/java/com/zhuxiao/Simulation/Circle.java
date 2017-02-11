@@ -1,4 +1,4 @@
-package com.zhuxiao.AlgrothimDemo;
+package com.zhuxiao.Simulation;
 
 import java.util.Random;
 

@@ -1,4 +1,4 @@
-package com.zhuxiao.AlgrothimDemo;
+package com.zhuxiao.Simulation;
 
 public class Node {
  	private Point pos;

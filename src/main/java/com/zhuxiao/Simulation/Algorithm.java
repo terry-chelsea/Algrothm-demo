@@ -1,11 +1,11 @@
-package com.zhuxiao.AlgrothimDemo;
+package com.zhuxiao.Simulation;
 
-import java.io.FileNotFoundException;
-import java.io.PrintStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class Algorithm {
-	private static PrintStream ps = Scenario.ps;
 	private static int INIT_NUM = 1;
+	private static Logger logger = LoggerFactory.getLogger(Algorithm.class);
 
 	protected abstract Reader[] runInternal(Node[] nodes, int readerNum, Circle circle);
 	
@@ -31,19 +31,18 @@ public abstract class Algorithm {
 		}
 		for(Reader reader : readers) {
 			if(circle.isOutside(reader.getPosition())) {
-				System.out.println("!!!!!! reader is outside : circle = " + circle + ", point " + reader.getPosition());
+				logger.warn("Reader is outside : circle = {}, position {}", circle, reader.getPosition());
 			}
 		}
 		int i = 1;
 		for(Node node : nodes) {
-			ps.println("node " + (i ++) + node.getPosition());
+			logger.debug("Node {}, Position {}", (i ++), node.getPosition());
 		}
 		
 		i = 0;
 		for(Reader reader : readers) {
-			ps.println("reader " + (i ++) + reader.getPosition());
+			logger.debug("Reader {}, Position {}", (i ++), reader.getPosition());
 		}
-		ps.flush();
 		return true;
 	}
 	
@@ -56,10 +55,9 @@ public abstract class Algorithm {
 			}
 		}
 		//找出接收功率最小的节点(可能有多个)及该最小功率tempPmin	
-		ps.println("==========node的ratio=============");
-		for(int i=0; i<nodes.length; i++)
-		{
-			ps.println("初始化node"+i+"的ratio: "+nodes[i].getRatio());
+		logger.debug("==========Node的Ratio=============");
+		for(int i=0; i<nodes.length; i++) {
+			logger.debug("Initialize Node {}, Ratio = {}", i, nodes[i].getRatio());
 		}
 		double tempPmin = nodes[0].getRatio();
 		int nodenum=0;

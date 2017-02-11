@@ -1,4 +1,4 @@
-package com.zhuxiao.AlgrothimDemo;
+package com.zhuxiao.Simulation;
 
 //标注一个二维的坐标
 public class Point {

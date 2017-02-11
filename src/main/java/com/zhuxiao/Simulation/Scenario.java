@@ -1,16 +1,13 @@
-package com.zhuxiao.AlgrothimDemo;
+package com.zhuxiao.Simulation;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Random;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Scenario {
 	// 最初放置node节点的场景大小
@@ -23,15 +20,7 @@ public class Scenario {
 	private static final int MIN_POWERS_SIZE = MIN_POWERS.length;
 	//随机数生成器
 	public static Random rand = new Random();
-	public static PrintStream ps=null;
-	static {
-		try {
-			ps = new PrintStream(new File("E:\\eclipse\\ZHUXIAOproject\\data.txt"));
-		} catch (FileNotFoundException e) {
-			ps = System.out;
-		}
-	}
-	
+	private static Logger logger = LoggerFactory.getLogger(Scenario.class);
 	
 	private Node[] nodes = new Node[NODE_NUM];
 	private Circle circle;
@@ -91,11 +80,6 @@ public class Scenario {
 				}
 			}
 			if(index == -1) {
-//				System.out.println(tr);
-				int cnt = 0;
-				for(Node node : this.nodes) {
-					//System.out.println("Node " + (++ cnt) + " distance : " + (minCircle.getRedius() - minCircle.getCenter().distanceTo(node.getPosition())));
-				}
 				return minCircle;
 			}
 			
@@ -142,20 +126,14 @@ public class Scenario {
 		this.initialize();
 		if(this.circle == null)
 			return ;
-		//已经注册的算法，根据当前的场景计算reader的个数和reader的位置信息
-//		double [] d=new double[20];
-//		for(int i=0; i<nodes.length ;i++)
-//		{
-//			d[i]=this.circle.getCenter().distanceTo(nodes[i].getPosition());
-//		}
-		for(int i=0; i<nodes.length; i++)
-		{
-			System.out.println("node"+i+":"+nodes[i].getPosition());
+		// 已经注册的算法，根据当前的场景计算reader的个数和reader的位置信息
+		for(int i = 0; i < nodes.length; i ++) {
+			logger.debug("Initalize node index : {}, position {}", i, nodes[i].getPosition());
 		}
 		for(Algorithm algorithm : this.algorithms) {
 			//根据当前算法计算出该场景下满足条件的最小个数的reader分布
 			Reader readers[] = algorithm.run(nodes, this.circle);
-			ps.println("\tUsing " + algorithm + ", need " + readers.length);
+			logger.info("\tUsing {}, need {} readers.", algorithm, readers.length);
 			//获取该算法的结果集（Map的value是一个存放reader个数的list）
 			List<Integer> results = resultMap.get(algorithm);
 			//获取到list之后，把本次结果加入到里面（即满足结果的最小的reader个数）
@@ -176,7 +154,7 @@ public class Scenario {
 			for(Integer value : results) {
 				sum += value;
 			}
-			ps.println(alg + ", test times " + size + ",average reader number : " + (sum / size));
+			logger.info("Algorithm {}, run {} times, average reader number {}.", alg, size, (sum / size));
 		}
 	}
 	
@@ -193,13 +171,13 @@ public class Scenario {
 		Scenario scenario = new Scenario();
 		for(int i = 0 ; i < 1 ; ++ i) {
 			Circle c2 = scenario.createCircle();
-			System.out.println("Second circle : " + c2);
+			logger.info("Second circle : " + c2);
 			for(Node node : scenario.nodes) {
 				if(c2.isOutside(node.getPosition())) {
-					System.out.println("!!!Outside point " + node.getPosition() + ", circle " + c2);
+					logger.warn("Outside point {}, Circle {}.", node.getPosition(), c2);
 				}
 			}
-			System.out.println("========================");
+			logger.info("========================");
 		}
 	}
 	
@@ -209,7 +187,7 @@ public class Scenario {
 		scenario.addAlgorithm(new GreedyAlgorithm());
 //		scenario.addAlgorithm(new ParticleSwarmOptimizationAlgorithm());
 		for(int i = 0; i < count ; ++ i) {
-			ps.println("Scenario " + (i + 1) + "　: ");
+			logger.info("Scenario {} : ", (i + 1));
 			scenario.calculateMinReader();
 		}
 		

@@ -1,7 +1,8 @@
-package com.zhuxiao.AlgrothimDemo;
+package com.zhuxiao.Simulation;
 
 public class Reader {
-	private Point pos;
+	protected Point pos;
+	
 	public Reader(Point p) {
 		this.pos = p;
 	}
@@ -17,6 +18,18 @@ public class Reader {
 	
 	public void setPosition(Point p) {
 		this.pos = p;
+	}
+	
+	public boolean hasNext() {
+		return false;
+	}
+	
+	public Reader next() {
+		return this;
+	}
+	
+	public boolean isNodeInside(Point pos) {
+		return true;
 	}
 
 	@Override
