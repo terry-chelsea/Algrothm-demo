@@ -1,5 +1,7 @@
 package com.zhuxiao.Simulation;
 
+import java.util.Iterator;
+
 public class Reader {
 	protected Point pos;
 	
@@ -20,18 +22,10 @@ public class Reader {
 		this.pos = p;
 	}
 	
-	public boolean hasNext() {
-		return false;
-	}
-	
-	public Reader next() {
-		return this;
-	}
-	
 	public boolean isNodeInside(Point pos) {
 		return true;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "Reader [pos=" + pos + "]";

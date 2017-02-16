@@ -1,8 +1,9 @@
 package com.zhuxiao.Simulation;
 
+import java.util.Iterator;
 import java.util.Random;
 
-public class Circle {
+public class Circle implements Iterable{
 	private static Random rand = Scenario.rand;
 	private Point center;
 	private double redius;
@@ -72,5 +73,33 @@ public class Circle {
 		Point p = c.getRandomPoint();
 		double angle = c.getAngle(p);
 		System.out.println(angle);
+	}
+	
+	public IterablePoint iterator() {
+		return new IterablePoint(this.redius, 0);
+	}
+	
+	public static class IterablePoint implements Iterator<Point> {
+		private double redius;
+		private int angle;
+		
+		public IterablePoint(double redius, int angle) {
+			this.redius = redius;
+			this.angle = angle;
+		}
+		
+		public boolean hasNext() {
+			return this.angle < 360;
+		}
+
+		public Point next() {
+			double radian = Math.toRadians(angle);
+			double newX = redius * Math.cos(radian);
+			double newY = redius * Math.sin(radian);
+			
+			angle ++;
+			return new Point(newX, newY);
+		}
+		
 	}
 }

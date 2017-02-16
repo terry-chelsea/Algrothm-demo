@@ -19,30 +19,25 @@ public abstract class Algorithm {
 		}
 	}
 	
+	public String toString() {
+		return this.getClass().getSimpleName();
+	}
+	
 	public boolean isSatisfied(Node[] nodes, Reader[] readers, Circle circle) {
 		for(Node node : nodes) {
 			node.setPower(0.0);
 			for(Reader reader : readers) {
-				node.newPowerFromReader(reader);
+				if(reader != null && reader.isNodeInside(node.getPosition())) {
+					node.newPowerFromReader(reader);
+				}
 			}
-			if(!node.isEnoughPower()) {
-				return false;
-			}
-		}
-		for(Reader reader : readers) {
-			if(circle.isOutside(reader.getPosition())) {
-				logger.warn("Reader is outside : circle = {}, position {}", circle, reader.getPosition());
-			}
-		}
-		int i = 1;
-		for(Node node : nodes) {
-			logger.debug("Node {}, Position {}", (i ++), node.getPosition());
 		}
 		
-		i = 0;
-		for(Reader reader : readers) {
-			logger.debug("Reader {}, Position {}", (i ++), reader.getPosition());
+		for(Node node : nodes) {
+			if(node.isEnoughPower() == false)
+				return false;
 		}
+		
 		return true;
 	}
 	

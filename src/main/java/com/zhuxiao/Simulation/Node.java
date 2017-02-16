@@ -1,6 +1,6 @@
 package com.zhuxiao.Simulation;
 
-public class Node {
+public class Node implements Comparable<Node> {
  	private Point pos;
 	private double power;
 	private double minPower;
@@ -32,6 +32,21 @@ public class Node {
 		double Ph = eta * Gs * Gr * PS* lambda * lambda / 
 				(Lp*16 * pi * pi*(distinctFromReader + epsilong)*(distinctFromReader + epsilong));
 		this.power += Ph;
+	}
+	
+	public Circle getEffectiveCircle() {
+		if(this.isEnoughPower())
+			return null;
+		double needPower = this.minPower - this.power + this.minPower * 0.001;
+		
+		double eta = 0.3, lambda = 0.33, epsilong = 0.2316, pi = 3.1416;
+		double Gs = Math.pow(10, 0.8); //% 8dBi
+		double Gr = Math.pow(10, 0.2); //% 2dBi
+		double Lp = Math.pow(10, 0.3); //% 3dB
+		
+		double distinct = Math.sqrt(eta * Gs * Gr * PS* lambda * lambda / (needPower * Lp*16 * pi * pi)) - epsilong;
+		
+		return new Circle(this.pos, distinct);
 	}
 	
 	public void setPoint(Point p) {
@@ -67,8 +82,7 @@ public class Node {
 	
 	@Override
 	public String toString() {
-		return "Node [pos=" + pos + ", power=" + power + ", minPower="
-				+ minPower + "]";
+		return "Node [pos=" + pos + ", ratio=" + this.getRatio();
 	}
 	
 	public static void main(String[] args) {
@@ -86,5 +100,14 @@ public class Node {
 		
 		System.out.println(node.power);
 		System.out.println(node.isEnoughPower());
+	}
+
+	public int compareTo(Node o) {
+		if(Math.abs(this.getRatio() - o.getRatio()) < 1E-3)
+			return 0;
+		else if(this.getRatio() > o.getRatio())
+			return 1;
+		else 
+			return -1;
 	}
 }

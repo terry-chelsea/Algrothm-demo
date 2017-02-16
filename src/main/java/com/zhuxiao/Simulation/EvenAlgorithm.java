@@ -15,8 +15,4 @@ public class EvenAlgorithm extends Algorithm {
 		else 
 			return null;
 	}
-	
-	public String toString() {
-		return "Even Algorithm";
-	}
 }

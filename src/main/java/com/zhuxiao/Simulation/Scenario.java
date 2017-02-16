@@ -122,15 +122,12 @@ public class Scenario {
 	}
 	
 	public void calculateMinReader() {
-		//生成场景（随机撒node和画圆）
-		this.initialize();
-		if(this.circle == null)
-			return ;
-		// 已经注册的算法，根据当前的场景计算reader的个数和reader的位置信息
-		for(int i = 0; i < nodes.length; i ++) {
-			logger.debug("Initalize node index : {}, position {}", i, nodes[i].getPosition());
-		}
 		for(Algorithm algorithm : this.algorithms) {
+			//生成场景（随机撒node和画圆）
+			this.initialize();
+			if(this.circle == null)
+				continue ;
+			
 			//根据当前算法计算出该场景下满足条件的最小个数的reader分布
 			Reader readers[] = algorithm.run(nodes, this.circle);
 			logger.info("\tUsing {}, need {} readers.", algorithm, readers.length);
@@ -182,9 +179,11 @@ public class Scenario {
 	}
 	
 	private static void testAlgorithm() {
-		int count = 13  ;
+		int count = 13;
 		Scenario scenario = new Scenario();
-		scenario.addAlgorithm(new GreedyAlgorithm());
+//		scenario.addAlgorithm(new GreedyAlgorithm());
+		scenario.addAlgorithm(new RandomAngleAlgorithm());
+		scenario.addAlgorithm(new GreedAngleAlgorithm());
 //		scenario.addAlgorithm(new ParticleSwarmOptimizationAlgorithm());
 		for(int i = 0; i < count ; ++ i) {
 			logger.info("Scenario {} : ", (i + 1));

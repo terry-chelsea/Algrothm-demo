@@ -22,7 +22,6 @@ public class GreedyAlgorithm extends Algorithm {
 		logger.debug("Reader number = {} ", num);
 		for(int i = 0 ; i < K; ++ i) {
 			readers[i] = new Reader(circle.getRandomPoint());
-			
 		}
 		
 		logger.debug("====================Node========================");
@@ -107,9 +106,5 @@ public class GreedyAlgorithm extends Algorithm {
 		}  //-- end while
 
 		return null;
-	}
-	
-	public String toString() {
-		return "Greedy Algorithm";
 	}
 }

@@ -148,8 +148,4 @@ public class ParticleSwarmOptimizationAlgorithm extends Algorithm {
 		else 
 			return null;
 	}
-	
-	public String toString() {
-		return "Particle swarm optimization Algorithm";
-	}
 }
